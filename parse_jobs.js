@@ -1,7 +1,7 @@
-import XLSX from 'xlsx';
-import xml2js from 'xml2js';
-import fs from 'fs';
-import axios from 'axios';
+const XLSX = require('xlsx');
+const xml2js = require('xml2js');
+const fs = require('fs');
+const axios = require('axios');
 
 const workbook = XLSX.readFile('2019_Agency_Info.xlsx');
 const worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -38,22 +38,18 @@ const parseXML = async () => {
 };
 
 parseXML().then((json) => {
-  let count = 0;
   // Loop through the json.rss.channel[0].item array
   // and log each property
   json.rss.channel[0].item.forEach((item) => {
-    const {
-      title,
-      link,
-      pubDate,
-      jobId,
-      location,
-      state,
-      department,
-      advertiseFromDate,
-    } = item;
+    const { title, link, pubDate } = item;
 
-    console.log(item);
+    // console.log(item);
+
+    const jobId = item['joblisting:jobId'][0];
+    const location = item['joblisting:location'][0];
+    const state = item['joblisting:state'][0];
+    const department = item['joblisting:department'][0];
+    const advertiseFromDate = item['joblisting:advertiseFromDate'][0];
 
     // Log all variables
     console.log('title: ', title[0]);
